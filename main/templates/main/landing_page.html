@@ -1,0 +1,138 @@
+{% extends "main/base.html" %}
+
+{% block title %}Welcome to Cosmic Todo{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center min-vh-100">
+        <div class="col-lg-7 py-5">
+            <h1 class="display-4 mb-4">Organize Your Tasks in Cosmic Style</h1>
+            <p class="lead">Embark on a journey through space and time with our beautifully designed todo app. Stay organized with a stellar experience.</p>
+            
+            <div class="d-flex gap-3 mb-5">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket me-2"></i>Launch Dashboard
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Join Now
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="features">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle fa-2x mb-3 text-primary"></i>
+                            <h3 class="h5">Simple & Beautiful</h3>
+                            <p class="text-muted">Clean interface designed for maximum productivity</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-item">
+                            <i class="fas fa-clock fa-2x mb-3 text-primary"></i>
+                            <h3 class="h5">Task Management</h3>
+                            <p class="text-muted">Organize tasks with priorities and due dates</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt fa-2x mb-3 text-primary"></i>
+                            <h3 class="h5">Mobile Ready</h3>
+                            <p class="text-muted">Access your tasks from any device, anywhere</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt fa-2x mb-3 text-primary"></i>
+                            <h3 class="h5">Secure & Private</h3>
+                            <p class="text-muted">Your data is protected and private</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-5 d-none d-lg-block">
+            <div class="space-illustration">
+                <div class="planet"></div>
+                <div class="stars"></div>
+                <div class="astronaut">
+                    <i class="fas fa-user-astronaut fa-4x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.feature-item {
+    background: rgba(26, 26, 26, 0.6);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    background: rgba(26, 26, 26, 0.8);
+    border-color: var(--light-seagreen);
+}
+
+.space-illustration {
+    position: relative;
+    height: 500px;
+}
+
+.planet {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at 30% 30%, var(--light-seagreen), var(--dark-seagreen));
+    border-radius: 50%;
+    box-shadow: 0 0 60px rgba(60, 179, 113, 0.3);
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+.astronaut {
+    position: absolute;
+    top: 30%;
+    left: 60%;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <!-- User Statistics -->
+    <div class="col-12 mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">{{ total_missions }}</h3>
+                        <p class="stat-label">Total Missions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">{{ completed_missions }}</h3>
+                        <p class="stat-label">Completed Missions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">{{ completion_rate }}%</h3>
+                        <p class="stat-label">Mission Success Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Todo Form -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <i class="fas fa-plus-circle me-2"></i>New Mission
+                </h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-seagreen">
+                            <i class="fas fa-rocket me-2"></i>Launch Mission
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Todos -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <i class="fas fa-satellite me-2"></i>Active Missions
+                </h2>
+                {% if todos %}
+                    <div class="todo-list">
+                        {% for todo in todos %}
+                            <div class="todo-item">
+                                <div class="todo-content">
+                                    <h3 class="todo-title">{{ todo.title }}</h3>
+                                    {% if todo.description %}
+                                        <p class="todo-description">{{ todo.description }}</p>
+                                    {% endif %}
+                                    <div class="todo-meta">
+                                        {% if todo.due_date %}
+                                            <span class="todo-due-date">
+                                                <i class="fas fa-clock"></i>
+                                                Due: {{ todo.due_date|date:"M d, Y" }}
+                                            </span>
+                                        {% endif %}
+                                        <span class="todo-priority priority-{{ todo.priority }}">
+                                            <i class="fas fa-flag"></i>
+                                            Priority: {{ todo.get_priority_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="todo-actions">
+                                    <form method="post" action="{% url 'complete_todo' todo.pk %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'delete_todo' todo.pk %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-satellite-dish fa-3x mb-3" style="color: var(--light-seagreen)"></i>
+                        <p>No active missions. Ready to launch?</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if completed_todos %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fas fa-flag-checkered me-2"></i>Completed Missions
+                    </h2>
+                    <div class="todo-list completed">
+                        {% for todo in completed_todos %}
+                            <div class="todo-item completed-todo">
+                                <div class="todo-content">
+                                    <h3 class="todo-title">{{ todo.title }}</h3>
+                                    {% if todo.description %}
+                                        <p class="todo-description">{{ todo.description }}</p>
+                                    {% endif %}
+                                    <div class="todo-meta">
+                                        <span class="todo-completed-date">
+                                            <i class="fas fa-calendar-check"></i>
+                                            Completed: {{ todo.completed_date|date:"M d, Y" }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="todo-actions">
+                                    <form method="post" action="{% url 'delete_todo' todo.pk %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
