@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# Create a virtual environment
-python -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate
-
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
 # Collect static files
