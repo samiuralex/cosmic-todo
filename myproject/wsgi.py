@@ -14,5 +14,3 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
 application = get_wsgi_application()
-app = application  # This is needed for Vercel
-handler = application  # This is needed for Vercel
